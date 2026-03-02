@@ -32,7 +32,7 @@
       "hooks": [
         {
           "type": "command",
-          "command" : "python3 -c "import yaml; print('\n'.join(s['variable'] for s in yaml.safe_load(open('/project/.project/spec.yaml'))['execution']['secrets']))""
+          "command" : "$HOME/.claude/hooks/block-secrets-in-bash.sh"
         }
       ]
     }
