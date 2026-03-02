@@ -6,7 +6,7 @@
 1. This is a bare-bones template for a `~/.claude` folder in a Workbench project container
 2. It's a basic example of how you might set Claude up in the project container
     -   The `settings.json` file has Workbench specific items already in it
-        - It has `sandbox` enabled with a limited set of rules around blocking environment manipulation directly in the container
+        - It has `sandbox` enabled with a limited set of rules that block some file writes and reads for settings.json and related files.
         - It also has some `permissions` set to `ask` for read/write blocks for various files an agent shouldn't modify without alerting the user
         - It also has an example hook that will log tool calls to `/mnt/claude_audit_logs` in the container
         - It also has a `hook` setup to block simple exfiltration attempts for `secret` environment variables
