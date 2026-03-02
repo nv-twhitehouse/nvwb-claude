@@ -14,13 +14,13 @@
     "deny": ["Bash(pip install *)", "Bash(pip3 install *)", "Bash(python -m pip install *)", "Bash(python3 -m pip install *)", "Bash(sudo *)",
   "Bash(docker *)", "Bash(podman *)"]
   },
-  "hooks": {"PostToolUse": [ 
+  "hooks": {"PostToolUse": [
     {
-      "matcher": "Bash",
+      "matcher": "",
       "hooks": [
         {
           "type": "command",
-          "command": "$HOME/.claude/hooks/block-secrets-in-bash.sh"
+          "command": "jq -c '{ts: (now | todate), tool: .tool_name, target: (.tool_input.file_path // .tool_input.command // .tool_input.pattern // \"n/a\")}' >> /mnt/claude_audit_logs/claude-audit.jsonl"
         }
       ]
 
