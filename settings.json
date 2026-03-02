@@ -14,5 +14,18 @@
     "deny": ["Bash(pip install *)", "Bash(pip3 install *)", "Bash(python -m pip install *)", "Bash(python3 -m pip install *)", "Bash(sudo *)",
   "Bash(docker *)", "Bash(podman *)"]
   },
-  "env": {"NVWB_CONTAINER": "true"} 
+  "env": {"NVWB_CONTAINER": "true"},
+  "hooks": {"PostToolUse": [ 
+    {
+      "matcher": "",
+      "hooks": [
+        {
+          "type": "command",
+          "command": "jq -c '{ts: (now | todate), tool: .tool_name, target: (.tool_input.file_path // .tool_input.command // .tool_input.pattern // \"n/a\")}' >> /claude_audit_logs/claude-audit.jsonl"
+        }
+      ]
+
+    }
+  ] 
+  }  
 }
