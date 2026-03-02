@@ -39,7 +39,7 @@ This repository does NOT contain any instructions or rules for how Claude uses t
         - `pyaml` is required for the `hooks` setup in `~/.claude/settings.json`
 2. SUGGESTED: Add the following volume mounts to the project container for persistent storage across container **restarts**
     - `~/.claude`: Preserves settings and installed software across rebuilds and restarts
-    - `/mnt/claude_audit_logs`: Preserves tool calling logs captured by the `hook` in `settings.json` across rebuilds and restarts
+    - `/home/workbench/claude_audit_logs`: Preserves tool calling logs captured by the `hook` in `settings.json` across rebuilds and restarts
 
 ### Steps to Add this to the Project Container
 
