@@ -3,7 +3,7 @@
   "sandbox": {
     "enabled": true,
     "filesystem": {
-      "denyWrite": ["~/.claude/settings.json", "~/.claude/skills/nvwb-claude", "~/.claude/hooks", "~/.claude.json", "~/.claude/credentials.json"],
+      "denyWrite": ["$HOME/.claude/settings.json", "$HOME/.claude/skills/nvwb-claude", "$HOME/.claude/hooks", "$HOME/.claude.json", "$HOME/.claude/credentials.json"],
       "denyRead": ["~/.claude.json", "~/.claude/credentials.json"]
     },
     "autoAllowBashIfSandboxed": true
@@ -14,17 +14,27 @@
     "deny": ["Bash(pip install *)", "Bash(pip3 install *)", "Bash(python -m pip install *)", "Bash(python3 -m pip install *)", "Bash(sudo *)",
   "Bash(docker *)", "Bash(podman *)"]
   },
-  "env": {"NVWB_CONTAINER": "true"},
   "hooks": {"PostToolUse": [ 
     {
-      "matcher": "",
+      "matcher": "Bash",
       "hooks": [
         {
           "type": "command",
-          "command": "jq -c '{ts: (now | todate), tool: .tool_name, target: (.tool_input.file_path // .tool_input.command // .tool_input.pattern // \"n/a\")}' >> /claude_audit_logs/claude-audit.jsonl"
+          "command": "$HOME/.claude/hooks/block-secrets-in-bash.sh"
         }
       ]
 
+    }
+  ],
+  "PreToolUse": [
+    {
+      "matcher": "Bash",
+      "hooks": [
+        {
+          "type": "command",
+          "command" : "python3 -c "import yaml; print('\n'.join(s['variable'] for s in yaml.safe_load(open('/project/.project/spec.yaml'))['execution']['secrets']))""
+        }
+      ]
     }
   ] 
   }  

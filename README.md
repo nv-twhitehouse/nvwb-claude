@@ -8,9 +8,10 @@
     -   The `settings.json` file has Workbench specific items already in it
         - It has `sandbox` enabled with a limited set of rules around blocking environment manipulation directly in the container
         - It also has some `permissions` set to `ask` for read/write blocks for various files an agent shouldn't modify without alerting the user
+        - It also has an example hook that will log tool calls to `/mnt/claude_audit_logs` in the container
         - It also has a `hook` setup to block simple exfiltration attempts for `secret` environment variables
     - The `skills/nvidia-ai-workbench-container` subfolder has guidance on Workbench environment files and conventions
-    - The `hooks` subfolder is there as a suggestion but is currently empty with an `empty.txt` file as a place holder
+    - The `hooks` subfolder has a single script called `block-secrets-in-bash.sh` that runs as a `PreToolUse` hook to help prevent secret environment variables from leaking
 3. You can clone this repository into the container build with the `postBuild.bash` script
 4. You STILL need to setup a `/project/.claude` folder in the repository, along with a `CLAUDE.md` file
 5. You SHOULD add a persistent volume mount for `~/.claude` in the project container
