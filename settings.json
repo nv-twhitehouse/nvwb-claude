@@ -3,12 +3,16 @@
   "sandbox": {
     "enabled": true,
     "filesystem": {
-      "denyWrite": ["~/.claude/settings.json", "~/.claude/skills/nvwb-claude", "~/.claude/hooks"]
+      "denyWrite": ["~/.claude/settings.json", "~/.claude/skills/nvwb-claude", "~/.claude/hooks", "~/.claude.json", "~/.claude/credentials.json"],
+      "denyRead": ["~/.claude.json", "~/.claude/credentials.json"]
     },
-    "autoAllowBashIfSandboxed": true,
+    "autoAllowBashIfSandboxed": true
   },
   "permissions": {
-    "ask": ["Bash(git add *)", "Bash(git commit *)", "Bash(pip install *)"],
-    "deny": ["Read(~/.claude.json)"]
-  } 
+    "additionalDirectories":["~/","/tmp/","/project/"], 
+    "ask": ["Bash(git add *)", "Bash(git commit *)"],
+    "deny": ["Bash(pip install *)", "Bash(pip3 install *)", "Bash(python -m pip install *)", "Bash(python3 -m pip install *)", "Bash(sudo *)",
+  "Bash(docker *)", "Bash(podman *)"]
+  },
+  "env": {"NVWB_CONTAINER": "true"} 
 }
