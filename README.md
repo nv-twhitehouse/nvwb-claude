@@ -38,6 +38,7 @@
     - Enter **Target Directory >** `~/.claude` 
     - (optional) Enter **Description >** `Locally persisting Claude install and settings`
 3. Then build the container in the Desktop App or CLI
+4. (optional) You can add Claude Code to the JupyterLab Launcher
 
 ## Note
 
