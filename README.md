@@ -68,11 +68,10 @@ This repository does NOT contain any instructions or rules for how Claude uses t
 #### Note
 
 ```
-- If you are on API consumption billing for Anthropic, your token will be stored at `~/.claude.json`
-- Workbench does not yet support mounting a single file to persist that token
-- You may be tempted to mount the entire home folder, `~/`, in order to keep that token
-- BUT DON'T DO THAT
-- It will break pip installs because this will write over the packages installed into the container by Workbench
-- This means you will need to reauthenticate everytime you fire up Claude in the container
-- We will fix this in a future release 
+- If you are on API consumption billing for Anthropic, then you can't really save your `claudeAiOauth` credential because it's hard coded to be saved at `~/.claude.json`. Other OAuth setups save it to `~/.claude/.credentials.json` which is persisted by the mount.
+- Workbench does not yet support mounting a single file to persist that token, so you will have to restart everytime or figure out some sort of simlink
+- You may be tempted to mount the entire home folder, `~/`, in order to keep that token, BUT DON'T DO THAT
+- It will break pip installs because mounting the entire home folder will cause problems when Workbench goes to install `pip` packages there
+- We will fix this in a future release
+- If you are on another billing plan, you shouldn't have to worry about this and the credentials will persist in `~/.claude` 
 ```
