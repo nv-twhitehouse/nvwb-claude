@@ -26,3 +26,7 @@ if command -v nvidia-smi &>/dev/null && nvidia-smi &> /dev/null; then
    nvidia-smi --query-gpu=index,name,memory.total --format=csv,noheader
 fi
 
+# Check if there's a ~/claude_audit_logs folder, and if not make one
+if [ ! -d ~/claude_audit_logs ]; then
+   mkdir ~/claude_audit_logs
+fi

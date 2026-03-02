@@ -31,7 +31,7 @@
         "hooks": [
           { 
             "type": "command",
-            "command": "jq -c '{ts: (now | todate), event: \"permission_request\", tool: .tool_name, target: (.tool_input.file_path // .tool_input.command // .tool_input.pattern // \"n/a\")}' >> ~/claude_audit_logs/claude-audit.jsonl"
+            "command": "jq -c '{ts: (now | todate), session: .session_id, event: \"permission_request\", tool: .tool_name, sandbox_disabled: (.tool_input.dangerouslyDisableSandbox // false), target: (.tool_input.file_path // .tool_input.command // .tool_input.pattern // \"n/a\")}' >> ~/claude_audit_logs/claude-audit.jsonl"
           }
         ]
     }
@@ -42,7 +42,7 @@
       "hooks": [
         {
           "type": "command",
-          "command": "jq -c '{ts: (now | todate), event: \"tool_used\", tool: .tool_name, target: (.tool_input.file_path // .tool_input.command // .tool_input.pattern // \"n/a\")}' >> ~/claude_audit_logs/claude-audit.jsonl"
+          "command": "jq -c '{ts: (now | todate), session: .session_id, event: \"tool_used\", tool: .tool_name, sandbox_disabled: (.tool_input.dangerouslyDisableSandbox // false), target: (.tool_input.file_path // .tool_input.command // .tool_input.pattern // \"n/a\")}' >> ~/claude_audit_logs/claude-audit.jsonl"
         }
       ]
     }

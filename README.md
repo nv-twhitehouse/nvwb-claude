@@ -18,6 +18,7 @@
             - Checks for existing `/project/.claude` and `/project/CLAUDE.md` files, and adds them if not
             - Prints `/project/.project/spec.yaml` into Claude's context if there
             - Runs and parses `nvidia-smi` to see if/what GPU are mounted in the container
+            - Checks if the log folder exists, and if not makes it
     - The settings maintain a log of tools called and permission requests at `~/claude_audit_logs`
         - This is only persisted if you set that up as a volume mount (or host mount if desired)
 3. You can clone this repository into the container build with the `postBuild.bash` script
@@ -52,8 +53,6 @@ This repository does NOT contain any instructions or rules for how Claude uses t
 ### Steps to Add this to the Project Container
 
 1. Add the following commands **in order** to the top of your `postBuild.bash`
-    - `sudo apt-get install -y bubblewrap socat`
-        - These packages are necessary for the Claude sandbox to work
     - `git clone https://github.com/nv-twhitehouse/nvwb-claude ~/.claude`
         - Substitute your username/org on GitHub for `nv-twhitehouse` if you forked the original repository
     - ```
@@ -61,16 +60,17 @@ This repository does NOT contain any instructions or rules for how Claude uses t
         sudo apt-get install -y nodejs
         sudo npm install -g @anthropic-ai/claude-code
       ```
-2. Add a volume mount to persist the Claude install in the container (Desktop App)
+2. Add a volume mount to persist the Claude install in the container (Use Desktop App)
     - **Project Tab > Project Container > Mounts > Add**
     - Select **Type > Volume Mount**
     - Enter **Target Directory >** `~/.claude` 
     - (optional) Enter **Description >** `Persisting Claude install and settings in the container`
-3. Add another volume mount to persist tool calling logs in the container
+3. Add another volume to persist the tool calling logs in the container (Use Desktop App)
     - **Project Tab > Project Container > Mounts > Add**
     - Select **Type > Volume Mount**
-    - Enter **Target Directory >** `/mnt/claude_audit_logs` 
-    - (optional) Enter **Description >** `Persisting tool calling logs in the container`
+    - Enter **Target Directory >** `~/claude_audit_logs` 
+    - (optional) Enter **Description >** `Persisting record of Claude tool calls in the container`
+        - Note: This is not a tamper proof log.
 4. Then build the container in the Desktop App or CLI
 
 #### Note
