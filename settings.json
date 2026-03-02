@@ -20,7 +20,7 @@
       "hooks": [
         {
           "type": "command",
-          "command": "jq -c '{ts: (now | todate), tool: .tool_name, target: (.tool_input.file_path // .tool_input.command // .tool_input.pattern // \"n/a\")}' >> /mnt/claude_audit_logs/claude-audit.jsonl"
+          "command": "jq -c '{ts: (now | todate), tool: .tool_name, target: (.tool_input.file_path // .tool_input.command // .tool_input.pattern // \"n/a\")}' >> /home/workbench/claude_audit_logs/claude-audit.jsonl"
         }
       ]
 
