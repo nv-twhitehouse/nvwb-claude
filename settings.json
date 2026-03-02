@@ -1,0 +1,14 @@
+{
+  "model": "claude-opus-4-6",
+  "sandbox": {
+    "enabled": true,
+    "filesystem": {
+      "denyWrite": ["~/.claude/settings.json", "~/.claude/skills/nvwb-claude", "~/.claude/hooks"]
+    },
+    "autoAllowBashIfSandboxed": true,
+  },
+  "permissions": {
+    "ask": ["Bash(git add *)", "Bash(git commit *)", "Bash(pip install *)"],
+    "deny": ["Read(~/.claude.json)"]
+  } 
+}
