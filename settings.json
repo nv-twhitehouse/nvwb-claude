@@ -3,7 +3,7 @@
   "sandbox": {
     "enabled": true,
     "filesystem": {
-      "denyWrite": ["$HOME/.claude/settings.json", "$HOME/.claude/skills/nvwb-claude", "$HOME/.claude/hooks", "$HOME/.claude.json", "$HOME/.claude/credentials.json"],
+      "denyWrite": ["~/.claude/settings.json", "~/.claude/skills/nvwb-claude", "~/.claude/hooks", "~/.claude.json", "~/.claude/credentials.json"],
       "denyRead": ["~/.claude.json", "~/.claude/credentials.json"]
     },
     "autoAllowBashIfSandboxed": true
@@ -14,7 +14,20 @@
     "deny": ["Bash(pip install *)", "Bash(pip3 install *)", "Bash(python -m pip install *)", "Bash(python3 -m pip install *)", "Bash(sudo *)",
   "Bash(docker *)", "Bash(podman *)"]
   },
-  "hooks": {"PostToolUse": [
+  "hooks": {"SessionStart": [
+    {
+      "matcher": "startup",
+      "hooks": [
+        {
+          "type": "command",
+          "command": "$HOME/.claude/hooks/startup-claude.sh"
+        }
+      ]
+
+    }
+
+  ],
+    "PostToolUse": [
     {
       "matcher": "",
       "hooks": [

@@ -11,7 +11,13 @@
         - It also has an example hook that will log tool calls to `/mnt/claude_audit_logs` in the container
         - It also has a `hook` setup to block simple exfiltration attempts for `secret` environment variables
     - The `skills/nvidia-ai-workbench-container` subfolder has guidance on Workbench environment files and conventions
-    - The `hooks` subfolder has a single script called `block-secrets-in-bash.sh` that runs as a `PreToolUse` hook to help prevent secret environment variables from leaking
+    - The `hooks` subfolder has two scripts
+        - `block-secrets-in-bash.sh` runs as a `PreToolUse` hook to help prevent secret environment variables from leaking
+        - `startup-claude.sh` runs on initiating Claude Code to get some basic info on the container:
+            - Checks if it's a project container
+            - Checks for existing `/project/.claude` and `/project/CLAUDE.md` files, and adds them if not
+            - Prints `/project/.project/spec.yaml` into Claude's context if there
+            - Runs and parses `nvidia-smi` to see if/what GPU are mounted in the container
 3. You can clone this repository into the container build with the `postBuild.bash` script
 4. You STILL need to setup a `/project/.claude` folder in the repository, along with a `CLAUDE.md` file
 5. You SHOULD add a persistent volume mount for `~/.claude` in the project container
