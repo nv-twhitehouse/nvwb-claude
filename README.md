@@ -18,6 +18,8 @@
             - Checks for existing `/project/.claude` and `/project/CLAUDE.md` files, and adds them if not
             - Prints `/project/.project/spec.yaml` into Claude's context if there
             - Runs and parses `nvidia-smi` to see if/what GPU are mounted in the container
+    - The settings maintain a log of tools called and permission requests at `~/claude_audit_logs`
+        - This is only persisted if you set that up as a volume mount (or host mount if desired)
 3. You can clone this repository into the container build with the `postBuild.bash` script
 4. You STILL need to setup a `/project/.claude` folder in the repository, along with a `CLAUDE.md` file
 5. You SHOULD add a persistent volume mount for `~/.claude` in the project container

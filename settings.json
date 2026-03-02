@@ -23,9 +23,18 @@
           "command": "$HOME/.claude/hooks/startup-claude.sh"
         }
       ]
-
     }
-
+  ],
+    "PermissionRequest": [
+      {
+        "matcher": "",
+        "hooks": [
+          { 
+            "type": "command",
+            "command": "jq -c '{ts: (now | todate), event: \"permission_request\", tool: .tool_name, target: (.tool_input.file_path // .tool_input.command // .tool_input.pattern // \"n/a\")}' >> ~/claude_audit_logs/claude-audit.jsonl"
+          }
+        ]
+    }
   ],
     "PostToolUse": [
     {
@@ -33,10 +42,9 @@
       "hooks": [
         {
           "type": "command",
-          "command": "jq -c '{ts: (now | todate), tool: .tool_name, target: (.tool_input.file_path // .tool_input.command // .tool_input.pattern // \"n/a\")}' >> /home/workbench/claude_audit_logs/claude-audit.jsonl"
+          "command": "jq -c '{ts: (now | todate), event: \"tool_used\", tool: .tool_name, target: (.tool_input.file_path // .tool_input.command // .tool_input.pattern // \"n/a\")}' >> ~/claude_audit_logs/claude-audit.jsonl"
         }
       ]
-
     }
   ],
   "PreToolUse": [
