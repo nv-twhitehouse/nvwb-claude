@@ -32,7 +32,7 @@ if [ -z "$SECRETS" ]; then
 fi
 
 # Block bare env-dumping commands if secrets were found
-if echo "$COMMAND" | grep -qxE '\s*(env|printenv|set)\s*'; then
+if echo "$COMMAND" | grep -qxE '\s*(env|printenv|set|declare -p|export -p)\s*'; then
   echo "Blocked: command dumps all environment variables, which includes secrets" >&2
   exit 2
 fi
