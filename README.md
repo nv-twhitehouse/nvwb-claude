@@ -4,20 +4,19 @@
 
 ### Basic Idea
 1. This is a bare-bones template to get started with Claude in a Workbench project container
-2. The main goal is to demo sandboxing, permissions configuration and hooks for Claude Code in a Workbench friendly way
-3. It assumes you will want to start a project container, and then start Claude within that container
-    - It's not built to work with Claude running outside of the project container
-4. It has the "essential" bits for the `~/.claude` folder that determines Claude behavior at the user level
-    - Note that Claude has a subtle settings hierarchy that partially relies on which folder you initiate the session from
-5. The overall procedure is to clone this repository in the `postBuild.bash` script and run some commands for setup 
-6. The sandbox, permissions and hooks assume that everything is relatively trusted and you are trying to prevent accidents and oversights
-    - They aren't perfect so don't treat them as such
-7. You can/should fork this to make your own adaptations.
+    - Goal is demoing Claude sandboxing, permissions configuration and hooks in a Workbench friendly way
+    - Has some starter bits to see how things can be done and leaves room to modify and improve 
+2. Assumes you will start a project container, and then start Claude in that container
+    - Not built to work with Claude running outside of the project container
+3. Procudure is to clone this repository in the `postBuild.bash` script and run some commands for setup 
+4. Everything assumes that you trust the code and things you are using
+    - This isn't a security posture against malicious attacks
+4. Fork this to make your own adaptations.
 
 ### Repository Structure
 1. Top level
     - `settings.json`: Configuration file for Claude 
-    - `setup.sh`: Script run in `postBuild.bash` that installs Claude Code during the build and setups up a few folders
+    - `setup.sh`: Script run in `postBuild.bash` to install dependencies and Claude Code during the build
     - `hooks/`: Folder with hook scripts used in `settings.json`
     - `skills/`: Folder with skills
 2. Hooks folder
