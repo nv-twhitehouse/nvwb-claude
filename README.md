@@ -37,10 +37,10 @@
     - `pip`: `pyyaml`
 3. Add the following commands to your `postBuild.bash` file
     - ```
-    git clone https://github.com/<your-github-username>/nvwb-claude ~/.claude
-    mv ~/.claude/entrypoint.sh ~/.claude/setup.sh ~/
-    bash ~/setup.sh
-    ```
+        git clone https://github.com/<your-github-username>/nvwb-claude ~/.claude
+        mv ~/.claude/entrypoint.sh ~/.claude/setup.sh ~/
+        bash ~/setup.sh
+      ```
 4. Add the following volume mounts to the project in the Workbench Desktop App or CLI 
     - `~/.claude` to persist settings and changes between container restarts
         - **Project Tab > Project Container > Mounts > Add**
@@ -52,7 +52,12 @@
         - Select **Type > Volume Mount**
         - Enter **Target Directory >** `~/claude_audit_logs` 
         - (optional) Enter **Description >** `Persisting logs in the container`
-5. Build the container
+5. Add the entrypoint script location to the `spec.yaml` file so Workbench knows to use it at runtime
+    - Open the `.project/spec.yaml` file with a file editor
+    - Edit the `environment.base.entrypoint_script` field to have the following value
+        - `"/home/workbench/entrypoint.sh"`
+    - Save the changes to the `spec.yaml` file
+6. Build the container
     - **Project Tab > Project Container > Build**
 
  ### Things You Can/Should Modify

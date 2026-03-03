@@ -18,5 +18,3 @@ if command -v nvidia-smi &>/dev/null && nvidia-smi &> /dev/null; then
    echo -e "There are GPUs available in this container. See `nvidia-smi` output below.\n"
    nvidia-smi --query-gpu=index,name,memory.total --format=csv,noheader
 fi
-
-
