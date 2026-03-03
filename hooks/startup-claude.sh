@@ -10,8 +10,15 @@ if [ ! -f /project/.project/spec.yaml ]; then
    exit 0
 fi
 
+# Add the spec to the context
 echo -e "This is the project spec.yaml file.\n"
 cat /project/.project/spec.yaml 
+
+# Check if CLAUDE.md or .claude are in the /project folder
+mkdir -p /project/.claude
+if [ ! -f /project/CLAUDE.md ]; then
+   echo "# Put your Claude instructions here" > /project/CLAUDE.md
+fi
 
 # Check if we are in a container with GPUs mounted
 if command -v nvidia-smi &>/dev/null && nvidia-smi &> /dev/null; then

@@ -4,20 +4,19 @@
 
 ### Basic Idea
 1. This is a bare-bones template to get started with Claude in a Workbench project container
-2. The main goal is are to demo sandboxing, permissions configuration and hooks for Claude Code in a Workbench friendly way
+2. The main goal is to demo sandboxing, permissions configuration and hooks for Claude Code in a Workbench friendly way
 3. It assumes you will want to start a project container, and then start Claude within that container
     - It's not built to work with Claude running outside of the project container
 4. It has the "essential" bits for the `~/.claude` folder that determines Claude behavior at the user level
     - Note that Claude has a subtle settings hierarchy that partially relies on which folder you initiate the session from
 5. The overall procedure is to clone this repository in the `postBuild.bash` script and run some commands for setup 
-6. The sandbox, permissions and hooks assume that everything is relatively trusted and you are trying to prevent accidents and oversites
+6. The sandbox, permissions and hooks assume that everything is relatively trusted and you are trying to prevent accidents and oversights
     - They aren't perfect so don't treat them as such
 7. You can/should fork this to make your own adaptations.
 
 ### Repository Structure
 1. Top level
     - `settings.json`: Configuration file for Claude 
-    - `entrypoint.sh`: Entrypoint script that Workbench runs on container start to do some basic setup for Claude that can't be done during build
     - `setup.sh`: Script run in `postBuild.bash` that installs Claude Code during the build and setups up a few folders
     - `hooks/`: Folder with hook scripts used in `settings.json`
     - `skills/`: Folder with skills
@@ -25,6 +24,7 @@
     - `startup-claude.sh`: Script that runs on starting a Claude Code session
         - Records the folder from which the Claude session was started 
         - Checks if the container is a project container
+        - Checks if the `/project` folder has `CLAUDE.md` and `.claude`
         - Checks if there are GPUs mounted
         - Feeds this information into Claude's context
     - `block-secrets-in-bash.sh`: Script that blocks simple leaks of secrets declared in `spec.yaml` into Claude's context
@@ -37,7 +37,7 @@
 2. Add the following commands to your `postBuild.bash` file
     - ```
         git clone https://github.com/<your-github-username>/nvwb-claude ~/.claude
-        mv ~/.claude/entrypoint.sh ~/.claude/setup.sh ~/
+        mv ~/.claude/setup.sh ~/
         bash ~/setup.sh
       ```
 3. Add the following volume mounts to the project in the Workbench Desktop App or CLI 
@@ -51,12 +51,7 @@
         - Select **Type > Volume Mount**
         - Enter **Target Directory >** `~/claude_audit_logs` 
         - (optional) Enter **Description >** `Persisting logs in the container`
-4. Add the entrypoint script location to the `spec.yaml` file so Workbench knows to use it at runtime
-    - Open the `.project/spec.yaml` file with a file editor
-    - Edit the `environment.base.entrypoint_script` field to have the following value
-        - `"/home/workbench/entrypoint.sh"`
-    - Save the changes to the `spec.yaml` file
-5. Build the container
+4. Build the container
     - **Project Tab > Project Container > Build**
 
  ### Things You Can/Should Modify
@@ -67,7 +62,6 @@
   4. `settings.json` > `model`: Change the default model from `claude-opus-4-6` if desired
   5. `hooks/`: Add new scripts and reference them in `settings.json` hooks
   6. Logging: Develop a better logging approach that accurately tracks which settings hierarchy is active for a session
-
 
 ## Be Aware of the Following
 
@@ -90,13 +84,10 @@
 
 1. This setup uses Claude Code hooks declared in `~/.claude/settings.json` to log tool calls to the file `~/claude_audit_logs/claude-audit.jsonl`
     - The folder `~/claude_audit_logs` is created by `setup.sh` on container build
-    - The file `claude-audit.jsonl` is created/checked by `entrypoint.sh` on container start
+    - The log file `claude-audit.jsonl` is created on the first tool call
     - Each entry is a JSON object with: timestamp, session ID, event type, tool name, sandbox status, and target
         - Sandbox status isn't handled well due to the edge cases in the hierarchy above, and isn't reliable
-2. The `entrypoint.sh` script sets the log file to **append-only** (`chattr +a`) on first container start
-    - Existing log entries cannot be modified in the running container due to no `sudo` permissions
-    - Entries will be appended by the hook as it runs
-3. Persistence across container starts or rebuilds requires a volume mount on `~/claude_audit_logs`
+2. Persistence across container starts or rebuilds requires a volume mount on `~/claude_audit_logs`
     - Without it, logs are lost on container restart
     - With it, logs accumulate across restarts and rebuilds
 
