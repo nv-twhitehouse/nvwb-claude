@@ -8,7 +8,8 @@
         "~/.claude/skills/ai-workbench-container",
         "~/.claude/hooks",
         "~/.claude.json",
-        "~/.claude/credentials.json"
+        "~/.claude/credentials.json",
+        "~/setup.sh"
       ],
       "denyRead": [
         "~/.claude.json",
