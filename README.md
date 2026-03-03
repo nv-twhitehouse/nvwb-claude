@@ -67,10 +67,10 @@
 ### Settings Hierarchy for Claude Code
 
 1. Settings are applied/merged in the following order, with managed settings being absolute
-    a. Managed (usually in `/etc/claude-code/managed-settings.json` or sometimes in `~/.claude/remote-settings.json`)
-    b. Project Local (`/project/.claude/settings.local.json`)
-    c. Project Shared (`/project/.claude/settings.json`)
-    d. User level (`~/.claude/settings.json`)
+    - Managed (usually in `/etc/claude-code/managed-settings.json` or sometimes in `~/.claude/remote-settings.json`)
+    - Project Local (`/project/.claude/settings.local.json`)
+    - Project Shared (`/project/.claude/settings.json`)
+    - User level (`~/.claude/settings.json`)
 2. However, the applicable settings files **for the session** depend on **where** the session starts
     - Session starts in `~/`: Managed > User Level apply; project level settings not relevant
     - Session starts in `/project`: Managed > Project Local > Project Shared > User Level apply
