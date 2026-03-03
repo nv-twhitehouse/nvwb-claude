@@ -4,13 +4,15 @@
 
 ### Basic Idea
 1. This is a bare-bones template to get started with Claude in a Workbench project container
-2. It assumes you will want to start a project container, and then start Claude within that container
+2. The main goal is are to demo sandboxing, permissions configuration and hooks for Claude Code in a Workbench friendly way
+3. It assumes you will want to start a project container, and then start Claude within that container
     - It's not built to work with Claude running outside of the project container
-3. It has the "essential" bits for the `~/.claude` folder that determines Claude behavior at the user level
+4. It has the "essential" bits for the `~/.claude` folder that determines Claude behavior at the user level
     - Note that Claude has a subtle settings hierarchy that partially relies on which folder you initiate the session from
-4. The overall procedure is to clone this repository in the `postBuild.bash` script and run some commands for setup 
-5. The main goals are to demo sandboxing, permissions configuration and hooks for Claude Code in a Workbench friendly way
-6. You can/should fork this to make your own adaptations.
+5. The overall procedure is to clone this repository in the `postBuild.bash` script and run some commands for setup 
+6. The sandbox, permissions and hooks assume that everything is relatively trusted and you are trying to prevent accidents and oversites
+    - They aren't perfect so don't treat them as such
+7. You can/should fork this to make your own adaptations.
 
 ### Repository Structure
 1. Top level
@@ -32,16 +34,13 @@
 
 ## How to Get Started
 1. Fork this repository so you can make and keep your own edits
-2. Add the following packages to the project
-    - `apt`: `jq`, `bubblewrap`, and `socat`
-    - `pip`: `pyyaml`
-3. Add the following commands to your `postBuild.bash` file
+2. Add the following commands to your `postBuild.bash` file
     - ```
         git clone https://github.com/<your-github-username>/nvwb-claude ~/.claude
         mv ~/.claude/entrypoint.sh ~/.claude/setup.sh ~/
         bash ~/setup.sh
       ```
-4. Add the following volume mounts to the project in the Workbench Desktop App or CLI 
+3. Add the following volume mounts to the project in the Workbench Desktop App or CLI 
     - `~/.claude` to persist settings and changes between container restarts
         - **Project Tab > Project Container > Mounts > Add**
         - Select **Type > Volume Mount**
@@ -52,12 +51,12 @@
         - Select **Type > Volume Mount**
         - Enter **Target Directory >** `~/claude_audit_logs` 
         - (optional) Enter **Description >** `Persisting logs in the container`
-5. Add the entrypoint script location to the `spec.yaml` file so Workbench knows to use it at runtime
+4. Add the entrypoint script location to the `spec.yaml` file so Workbench knows to use it at runtime
     - Open the `.project/spec.yaml` file with a file editor
     - Edit the `environment.base.entrypoint_script` field to have the following value
         - `"/home/workbench/entrypoint.sh"`
     - Save the changes to the `spec.yaml` file
-6. Build the container
+5. Build the container
     - **Project Tab > Project Container > Build**
 
  ### Things You Can/Should Modify
