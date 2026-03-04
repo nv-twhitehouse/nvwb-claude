@@ -64,6 +64,17 @@
 
 ## Be Aware of the Following
 
+### Authentication on Container Start
+
+1. It seems that you must manually **re-authenticate** Claude Code to Anthropic **every** time you start the project container
+    - It's fairly easy, just use the browser based Oauth flow, but it can be annoying if you are starting and stopping a lot
+    - The main blocker seems to be that the `~/.claude.json` file governs authentication, and it won't persist on container restart. 
+    - Attempts so far to setup an environment variable to handle the auth have failed
+2. You **may** be tempted to volume mount the entire `~/` as done for the subfolder `~/.claude`, BUT DON'T because it will break how Workbench does `pip` installs
+3. You **can** use a host mount to mount a single file at the target `~/.claude.json` in the container, BUT this has consequences
+    - It exposes that information to your host system
+    - It may conflict with another similar file you have on your host
+
 ### Settings Hierarchy for Claude Code
 
 1. Settings are applied/merged in the following order, with managed settings being absolute
@@ -90,12 +101,3 @@
     - Without it, logs are lost on container restart
     - With it, logs accumulate across restarts and rebuilds
 
-### Authentication
-
-1. If your Anthropic account uses API Consumption billing, then you will need to **reauthenticate** everytime you start the container
-    - This is unfortunate but based on the fact that the Oauth configuration is saved to `~/.claude.json`, which is **not** in the `~/.claude` mount
-    - You may be tempted to mount the entire `~/`, but DON'T because it will break how Workbench does `pip` installs
-2. If you are using a different billing method, then authentication will persist between container rebuilds and restarts if you create the `~/.claude` mount
-    - This would involve starting Claude Code in the project container and then following the Oauth flow, where the configuration is saved into the mount
-    - Alternatively, you can setup a token as a secret (`ANTHROPIC_API_KEY`) and that should be loaded on container start
-    - However, DON'T use the secret AND the Oauth method as this will break things.
