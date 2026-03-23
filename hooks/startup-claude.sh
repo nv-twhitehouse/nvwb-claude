@@ -22,7 +22,8 @@ cat << 'EOF' > /project/CLAUDE.md
 - There are relevant skills in `~/.claude/skills/ai-workbench-container`
 - The project repository is at `/project`
 
-EOF 
+EOF
+
 fi
 
 
