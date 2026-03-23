@@ -1,0 +1,76 @@
+{
+  "model": "claude-opus-4-6",
+  "sandbox": {
+    "enabled": true,
+    "filesystem": {
+      "denyWrite": [
+        "~/.claude/settings.json",
+        "~/.claude/skills/ai-workbench-container",
+        "~/.claude/hooks",
+        "~/.claude.json",
+        "~/.claude/credentials.json",
+        "~/setup.sh"
+      ],
+      "denyRead": [
+        "~/.claude.json",
+        "~/.claude/credentials.json"
+      ]
+    },
+    "autoAllowBashIfSandboxed": true
+  },
+  "permissions": {
+    "additionalDirectories": [
+      "~/",
+      "/tmp/",
+      "/project/"
+    ],
+    "ask": [
+      "Bash(git add *)",
+      "Bash(git commit *)"
+    ],
+    "deny": [
+      "Bash(pip install *)",
+      "Bash(pip3 install *)",
+      "Bash(python -m pip install *)",
+      "Bash(python3 -m pip install *)",
+      "Bash(sudo *)",
+      "Bash(docker *)",
+      "Bash(podman *)"
+    ]
+  },
+  "hooks": {
+    "SessionStart": [
+      {
+        "matcher": "",
+        "hooks": [
+          {
+            "type": "command",
+            "command": "$HOME/.claude/hooks/tmp-startup-claude.sh"
+          }
+        ]
+      }
+    ],
+    "PostToolUse": [
+      {
+        "matcher": "",
+        "hooks": [
+          {
+            "type": "command",
+            "command": "jq -c '{ts: (now | todate), session: .session_id, event: \"tool_used\", tool: .tool_name, sandbox_disabled: (.tool_input.dangerouslyDisableSandbox // false), target: (.tool_input.file_path // .tool_input.command // .tool_input.pattern // \"n/a\")}' >> ~/claude_audit_logs/claude-audit.jsonl"
+          }
+        ]
+      }
+    ],
+    "PreToolUse": [
+      {
+        "matcher": "Bash",
+        "hooks": [
+          {
+            "type": "command",
+            "command": "$HOME/.claude/hooks/block-secrets-in-bash.sh"
+          }
+        ]
+      }
+    ]
+  }
+}
