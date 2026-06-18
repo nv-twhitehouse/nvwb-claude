@@ -26,7 +26,8 @@
     ],
     "ask": [
       "Bash(git add *)",
-      "Bash(git commit *)"
+      "Bash(git commit *)",
+      "Bash (git config *)"
     ],
     "deny": [
       "Bash(pip install *)",
@@ -45,7 +46,7 @@
         "hooks": [
           {
             "type": "command",
-            "command": "$HOME/.claude/hooks/startup-claude.sh"
+            "command": "$HOME/.claude/hooks/SessionStart-claude.sh"
           }
         ]
       }
@@ -56,7 +57,7 @@
        "hooks": [
 	 {
            "type": "command",
-	   "command": "$HOME/.claude/hooks/stop-claude.sh"
+	   "command": "$HOME/.claude/hooks/SessionEnd-claude.sh"
 	}
       ]
      }
