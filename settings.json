@@ -50,6 +50,17 @@
         ]
       }
     ],
+    "SessionEnd": [
+      {
+       "matcher": "",
+       "hooks": [
+	 {
+           "type": "command",
+	   "command": "$HOME/.claude/hooks/stop-claude.sh"
+	}
+      ]
+     }
+    ],
     "PostToolUse": [
       {
         "matcher": "",
